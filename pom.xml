@@ -4,17 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.nav.foreldrepenger</groupId>
-    <artifactId>inngangvilkar-regler</artifactId>
+    <artifactId>inngangsvilkar-regler</artifactId>
     <version>0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>FPSAK Inngangsvilkårregler ::</name>
     <description>Inngangsvilkårregler for foreldrepenger.</description>
-    <url>https://github.com/navikt/fp-inngangvilkar</url>
+    <url>https://github.com/navikt/fp-inngangsvilkar</url>
 
     <scm>
-        <developerConnection>scm:git:git@github.com:navikt/fp-inngangvilkar.git</developerConnection>
-        <connection>scm:git:git@github.com:navikt/fp-inngangvilkar.git</connection>
-        <url>https://github.com/navikt/fp-inngangvilkar</url>
+        <developerConnection>scm:git:git@github.com:navikt/fp-inngangsvilkar.git</developerConnection>
+        <connection>scm:git:git@github.com:navikt/fp-inngangsvilkar.git</connection>
+        <url>https://github.com/navikt/fp-inngangsvilkar</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -49,7 +49,7 @@
         <sonar.organization>navikt</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-        <sonar.projectKey>navikt_fp-inngangvilkar</sonar.projectKey>
+        <sonar.projectKey>navikt_fp-inngangsvilkar</sonar.projectKey>
 
     </properties>
 
@@ -185,7 +185,7 @@
         <repository>
             <id>github</id>
             <name>Github navikt Maven Packages</name>
-            <url>https://maven.pkg.github.com/navikt/fp-inngangvilkar/</url>
+            <url>https://maven.pkg.github.com/navikt/fp-inngangsvilkar/</url>
         </repository>
     </distributionManagement>
 
