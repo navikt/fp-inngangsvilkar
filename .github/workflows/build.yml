@@ -20,7 +20,7 @@ jobs:
       contents: read
     uses: navikt/fp-gha-workflows/.github/workflows/build-feature.yml@main
     with:
-      sonar-scan: false
+      sonar-scan: true
     secrets: inherit
 
   release-drafter:
