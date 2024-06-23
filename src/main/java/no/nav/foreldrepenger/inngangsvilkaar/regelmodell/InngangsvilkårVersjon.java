@@ -8,7 +8,7 @@ public class InngangsvilkårVersjon {
     private InngangsvilkårVersjon() {
     }
 
-    public static final EvaluationVersion INNGANGSVILKÅR_VERSJON = NareVersion.readVersionPropertyFor("inngangsvilkår", "nare/fp-inngangsvilkar-version.properties");
+    public static final EvaluationVersion INNGANGSVILKÅR_VERSJON = NareVersion.readVersionPropertyFor("fp-inngangsvilkar", "nare/fp-inngangsvilkar-version.properties");
 
 
 }
