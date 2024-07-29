@@ -29,7 +29,7 @@ public class RegelOversetter {
 
         var regelUtfall = getRegelUtfall(evaluation, summary);
         var regelReason = getRegelMerknad(summary).orElse(null);
-        var regelVersjon = InngangsvilkårVersjon.INNGANGSVILKÅR_VERSJON.version();
+        var regelVersjon = InngangsvilkårVersjon.INNGANGSVILKÅR_VERSJON.nameAndVersion();
 
         return new RegelEvalueringResultat(regelVersjon, regelUtfall, regelReason, regelEvalueringJson, jsonGrunnlag, ekstraData);
 
