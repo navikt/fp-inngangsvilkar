@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.inngangsvilkaar.regelmodell;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.adopsjon.AdopsjonsvilkårEngangsstønad;
@@ -10,6 +11,7 @@ import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.fødsel.Fødselsvilkår
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.fødsel.FødselsvilkårMor;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.Medlemskapsvilkår;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.MedlemskapsvilkårGrunnlag;
+import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.MedlemInngangsvilkårRegelGrunnlag;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.opptjening.Opptjeningsgrunnlag;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.opptjening.OpptjeningsvilkårResultat;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.opptjening.fp.OpptjeningsvilkårForeldrepenger;
@@ -40,6 +42,12 @@ public class InngangsvilkårRegler {
     public static RegelEvalueringResultat medlemskap(MedlemskapsvilkårGrunnlag grunnlag) {
         var evaluation = new Medlemskapsvilkår().evaluer(grunnlag);
         return RegelOversetter.oversett(evaluation, grunnlag);
+    }
+
+    public static RegelEvalueringResultat medlemskapV2(MedlemInngangsvilkårRegelGrunnlag grunnlag) {
+        var output = new HashSet<>();
+        var evaluation = new no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.Medlemskapsvilkår().evaluer(grunnlag, output);
+        return RegelOversetter.oversett(evaluation, grunnlag, output);
     }
 
     public static RegelEvalueringResultat opptjeningsperiode(RegelYtelse ytelse, OpptjeningsperiodeGrunnlag grunnlag) {
