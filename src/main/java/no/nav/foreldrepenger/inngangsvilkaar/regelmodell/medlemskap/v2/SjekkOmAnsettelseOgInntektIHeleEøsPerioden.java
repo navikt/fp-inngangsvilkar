@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2;
 
-import static no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.MedlemInngangsvilkårRegelGrunnlag.Beløp;
+import static no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.MedlemskapsvilkårGrunnlag.Beløp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -41,7 +41,7 @@ class SjekkOmAnsettelseOgInntektIHeleEøsPerioden extends LeafSpecification<Medl
         return ja();
     }
 
-    private static boolean harInntektSiste3mndFørStp(MedlemInngangsvilkårRegelGrunnlag grunnlag) {
+    private static boolean harInntektSiste3mndFørStp(MedlemskapsvilkårGrunnlag grunnlag) {
         var inntekter = grunnlag.arbeid().inntekter();
         Set<LocalDateSegment<Beløp>> inntektSegmenter = inntekter.stream()
             .map(i -> new LocalDateSegment<>(i.interval(), i.beløp()))

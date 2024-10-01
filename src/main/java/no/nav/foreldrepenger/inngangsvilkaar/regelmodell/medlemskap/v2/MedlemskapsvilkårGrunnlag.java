@@ -8,10 +8,10 @@ import java.util.Set;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.VilkårGrunnlag;
 import no.nav.fpsak.tidsserie.LocalDateInterval;
 
-public record MedlemInngangsvilkårRegelGrunnlag(LocalDateInterval vurderingsperiodeBosatt, LocalDateInterval vurderingsperiodeLovligOpphold,
-                                                Set<LocalDateInterval> registrertMedlemskapPerioder, Personopplysninger personopplysninger, Søknad søknad,
-                                                Arbeid arbeid, LocalDate skjæringstidspunkt, LocalDate behandlingsdato,
-                                                Beløp grunnbeløp) implements VilkårGrunnlag {
+public record MedlemskapsvilkårGrunnlag(LocalDateInterval vurderingsperiodeBosatt, LocalDateInterval vurderingsperiodeLovligOpphold,
+                                        Set<LocalDateInterval> registrertMedlemskapPerioder, Personopplysninger personopplysninger, Søknad søknad,
+                                        Arbeid arbeid, LocalDate skjæringstidspunkt, LocalDate behandlingsdato,
+                                        Beløp grunnbeløp) implements VilkårGrunnlag {
 
     public record Søknad(Set<LocalDateInterval> utenlandsopphold) {
     }
