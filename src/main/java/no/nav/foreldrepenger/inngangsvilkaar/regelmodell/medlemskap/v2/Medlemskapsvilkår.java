@@ -10,12 +10,12 @@ import no.nav.fpsak.nare.specification.Specification;
 
 
 @RuleDocumentation(value = Medlemskapsvilkår.ID, specificationReference = "https://confluence.adeo.no/display/TVF/Automatisk+medlemskapsvurdering")
-public class Medlemskapsvilkår implements RuleService<MedlemInngangsvilkårRegelGrunnlag> {
+public class Medlemskapsvilkår implements RuleService<MedlemskapsvilkårGrunnlag> {
 
     public static final String ID = "FP_VK_2";
 
     @Override
-    public Evaluation evaluer(MedlemInngangsvilkårRegelGrunnlag grunnlag, Object output) {
+    public Evaluation evaluer(MedlemskapsvilkårGrunnlag grunnlag, Object output) {
         var grunnlagOgMellomregning = new MedlemskapsvilkårMellomregning(grunnlag, (Set<MedlemskapAvvik>) output);
         var evaluated = getSpecification().evaluate(grunnlagOgMellomregning);
         evaluated.setEvaluationProperty("avvik", grunnlagOgMellomregning.avvik());

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap;
+package no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2;
 
 import static java.time.LocalDate.of;
 import static no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.Personopplysninger.*;
@@ -12,9 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.InngangsvilkårRegler;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.RegelUtfallMerknad;
-import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.MedlemskapAvvik;
-import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.MedlemInngangsvilkårRegelGrunnlag;
-import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.medlemskap.v2.Personopplysninger;
 import no.nav.fpsak.tidsserie.LocalDateInterval;
 
 class MedlemskapsvilkårTest {
@@ -30,14 +27,14 @@ class MedlemskapsvilkårTest {
             Region.TREDJELAND);
         var region2 = new RegionPeriode(vurderingsperiodeLovligOpphold, Region.EØS);
         var personopplysninger = new Personopplysninger(Set.of(region1, region2), Set.of(), Set.of(), Set.of(utenlandsadresse));
-        var søknad = new MedlemInngangsvilkårRegelGrunnlag.Søknad(Set.of(new LocalDateInterval(of(2024, 1, 1), of(2024, 1, 1))));
-        var arbeid = new MedlemInngangsvilkårRegelGrunnlag.Arbeid(Set.of(), Set.of());
+        var søknad = new MedlemskapsvilkårGrunnlag.Søknad(Set.of(new LocalDateInterval(of(2024, 1, 1), of(2024, 1, 1))));
+        var arbeid = new MedlemskapsvilkårGrunnlag.Arbeid(Set.of(), Set.of());
         var skjæringstidspunkt = of(2024, 1, 1);
         var behandlingsdato = of(2024, 1, 1);
-        var grunnbeløp = new MedlemInngangsvilkårRegelGrunnlag.Beløp(BigDecimal.valueOf(1000));
-        var grunnlag = new MedlemInngangsvilkårRegelGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, registrertMedlemskapPerioder,
+        var grunnbeløp = new MedlemskapsvilkårGrunnlag.Beløp(BigDecimal.valueOf(1000));
+        var grunnlag = new MedlemskapsvilkårGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, registrertMedlemskapPerioder,
             personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp);
-        var regelEvalueringResultat = InngangsvilkårRegler.medlemskapV2(grunnlag);
+        var regelEvalueringResultat = InngangsvilkårRegler.medlemskap(grunnlag);
 
         assertThat(regelEvalueringResultat.merknad().regelUtfallMerknad()).isEqualTo(RegelUtfallMerknad.RVM_1025);
         var avvik = (HashSet<MedlemskapAvvik>) regelEvalueringResultat.resultatData();
@@ -56,15 +53,15 @@ class MedlemskapsvilkårTest {
         var personstatus = Set.of(new PersonstatusPeriode(vurderingsperiodeBosatt, PersonstatusPeriode.Type.BOSATT_ETTER_FOLKEREGISTERLOVEN));
         var adresser = Set.of(new Adresse(vurderingsperiodeBosatt, Adresse.Type.BOSTEDSADRESSE, false));
         var personopplysninger = new Personopplysninger(Set.of(norden, tredjeland, eøs), oppholdstillatelser, personstatus, adresser);
-        var søknad = new MedlemInngangsvilkårRegelGrunnlag.Søknad(Set.of());
-        var grunnbeløp = new MedlemInngangsvilkårRegelGrunnlag.Beløp(BigDecimal.valueOf(1000));
+        var søknad = new MedlemskapsvilkårGrunnlag.Søknad(Set.of());
+        var grunnbeløp = new MedlemskapsvilkårGrunnlag.Beløp(BigDecimal.valueOf(1000));
         var skjæringstidspunkt = of(2024, 1, 1);
-        var arbeid = new MedlemInngangsvilkårRegelGrunnlag.Arbeid(Set.of(vurderingsperiodeLovligOpphold),
-            Set.of(new MedlemInngangsvilkårRegelGrunnlag.Arbeid.Inntekt(new LocalDateInterval(of(2023, 12, 1), of(2023, 12, 31)), grunnbeløp)));
+        var arbeid = new MedlemskapsvilkårGrunnlag.Arbeid(Set.of(vurderingsperiodeLovligOpphold),
+            Set.of(new MedlemskapsvilkårGrunnlag.Arbeid.Inntekt(new LocalDateInterval(of(2023, 12, 1), of(2023, 12, 31)), grunnbeløp)));
         var behandlingsdato = of(2024, 1, 1);
-        var grunnlag = new MedlemInngangsvilkårRegelGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, Set.of(),
+        var grunnlag = new MedlemskapsvilkårGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, Set.of(),
             personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp);
-        var regelEvalueringResultat = InngangsvilkårRegler.medlemskapV2(grunnlag);
+        var regelEvalueringResultat = InngangsvilkårRegler.medlemskap(grunnlag);
 
         assertThat(regelEvalueringResultat.merknad()).isNull();
         var avvik = (HashSet<MedlemskapAvvik>) regelEvalueringResultat.resultatData();
