@@ -26,8 +26,11 @@ public class FastsettSkjæringsdatoAnnenFødsel extends LeafSpecification<Opptje
         var terminDato = Optional.ofNullable(regelmodell.getGrunnlag().terminDato());
         var tidligsteUttakFørTermin = terminDato.map(t -> t.minus(regelmodell.getRegelParametre().annenTidligsteUttakFørTerminPeriode()));
         var hendelsesDato = regelmodell.getGrunnlag().hendelsesDato();
+        // Jfr etablert praksis for mor fødsel - tillate uttak fom 2 uker før tidligst av termin eller fødsel
+        var tidligsteUttakFørHendelse = hendelsesDato.minus(regelmodell.getRegelParametre().annenTidligsteUttakFørTerminPeriode());
 
-        var tidligsteUttakDato = tidligsteUttakFørTermin.isPresent() && tidligsteUttakFørTermin.get().isBefore(hendelsesDato) ? tidligsteUttakFørTermin.get() : hendelsesDato;
+        var tidligsteUttakDato = tidligsteUttakFørTermin.filter(tft -> tft.isBefore(tidligsteUttakFørHendelse))
+            .orElse(tidligsteUttakFørHendelse);
 
         if (skjæringsDatoOpptjening.isBefore(tidligsteUttakDato)) {
             skjæringsDatoOpptjening = tidligsteUttakDato;

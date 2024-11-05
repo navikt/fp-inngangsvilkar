@@ -171,7 +171,7 @@ class RegelFastsettOpptjeningsperiodeTest {
         var resultat = new OpptjeningsPeriode();
         new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
         // Assert
-        assertSkjæringsdato(resultat, fødselsdato);
+        assertSkjæringsdato(resultat, fødselsdato.minusWeeks(2)); // Tidligst 2 uker før fødsel
     }
 
     @Test
@@ -194,11 +194,12 @@ class RegelFastsettOpptjeningsperiodeTest {
     void farTerminFørFødselBeholdUttakEnUkeFør() {
         // Arrange
         var fødselsdato = LocalDate.of(2022, Month.AUGUST, 10);
+        var termindato = fødselsdato.minusDays(2);
         var uttaksDato = fødselsdato.minusWeeks(1);
         var regelmodell = OpptjeningsperiodeGrunnlag.grunnlag(FagsakÅrsak.FØDSEL, RegelSøkerRolle.FARA, LovVersjoner.PROP15L2122)
             .medFørsteUttaksDato(uttaksDato)
             .medHendelsesDato(fødselsdato)
-            .medTerminDato(fødselsdato.minusDays(2));
+            .medTerminDato(termindato);
 
         // Act
         var resultat = new OpptjeningsPeriode();
@@ -211,28 +212,30 @@ class RegelFastsettOpptjeningsperiodeTest {
     void farTerminFørFødselJusterTilToUker() {
         // Arrange
         var fødselsdato = LocalDate.of(2022, Month.AUGUST, 10);
+        var termindato = fødselsdato.minusDays(2);
         var uttaksDato = fødselsdato.minusWeeks(4);
         var regelmodell = OpptjeningsperiodeGrunnlag.grunnlag(FagsakÅrsak.FØDSEL, RegelSøkerRolle.FARA, LovVersjoner.PROP15L2122)
             .medFørsteUttaksDato(uttaksDato)
             .medHendelsesDato(fødselsdato)
-            .medTerminDato(fødselsdato.minusDays(2));
+            .medTerminDato(termindato);
 
         // Act
         var resultat = new OpptjeningsPeriode();
         new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
         // Assert
-        assertSkjæringsdato(resultat, fødselsdato.minusWeeks(2).minusDays(2));
+        assertSkjæringsdato(resultat, termindato.minusWeeks(2));
     }
 
     @Test
     void farTerminEtterFødselBeholdUttakEnUkeFør() {
         // Arrange
         var fødselsdato = LocalDate.of(2022, Month.AUGUST, 10);
+        var termindato = fødselsdato.plusDays(2);
         var uttaksDato = fødselsdato.minusWeeks(1);
         var regelmodell = OpptjeningsperiodeGrunnlag.grunnlag(FagsakÅrsak.FØDSEL, RegelSøkerRolle.FARA, LovVersjoner.PROP15L2122)
             .medFørsteUttaksDato(uttaksDato)
             .medHendelsesDato(fødselsdato)
-            .medTerminDato(fødselsdato.plusDays(2));
+            .medTerminDato(termindato);
 
         // Act
         var resultat = new OpptjeningsPeriode();
@@ -245,17 +248,18 @@ class RegelFastsettOpptjeningsperiodeTest {
     void farTerminEtterFødselJusterTilToUker() {
         // Arrange
         var fødselsdato = LocalDate.of(2022, Month.AUGUST, 10);
+        var termindato = fødselsdato.plusDays(2);
         var uttaksDato = fødselsdato.minusWeeks(3);
         var regelmodell = OpptjeningsperiodeGrunnlag.grunnlag(FagsakÅrsak.FØDSEL, RegelSøkerRolle.FARA, LovVersjoner.PROP15L2122)
             .medFørsteUttaksDato(uttaksDato)
             .medHendelsesDato(fødselsdato)
-            .medTerminDato(fødselsdato.plusDays(2));
+            .medTerminDato(termindato);
 
         // Act
         var resultat = new OpptjeningsPeriode();
         new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
         // Assert
-        assertSkjæringsdato(resultat, fødselsdato.minusWeeks(2).plusDays(2));
+        assertSkjæringsdato(resultat, fødselsdato.minusWeeks(2));
     }
 
     private void assertSkjæringsdato(OpptjeningsPeriode resultat, LocalDate expectedSTP) {
