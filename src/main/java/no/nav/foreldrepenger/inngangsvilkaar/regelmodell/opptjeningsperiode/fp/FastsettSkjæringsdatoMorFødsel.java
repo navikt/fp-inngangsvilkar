@@ -28,7 +28,7 @@ public class FastsettSkjæringsdatoMorFødsel extends LeafSpecification<Opptjeni
         var senesteUttakFørTermin = terminDato.map(t -> t.minus(regelmodell.getRegelParametre().morSenesteUttakFørTerminPeriode()));
         var hendelsesDato = regelmodell.getGrunnlag().hendelsesDato();
         // Strengt tatt ikke i lov eller rundskriv, men er etablert og gammel praksis med 3 uker før dersom termindato mangler.
-        var tidligsteUttakFørHendelseSedvane = hendelsesDato.minus(regelmodell.getRegelParametre().morSenesteUttakFørTerminPeriode());
+        var tidligsteUttakFørHendelseSedvane = hendelsesDato.minus(regelmodell.getRegelParametre().morTidligsteUttakFørTerminPeriode());
 
         var tidligsteUttakDato = tidligsteUttakFørTermin.filter(tft -> tft.isBefore(tidligsteUttakFørHendelseSedvane))
             .orElse(tidligsteUttakFørHendelseSedvane);
