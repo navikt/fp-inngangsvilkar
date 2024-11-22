@@ -71,6 +71,67 @@ class RegelFastsettOpptjeningsperiodeTest {
     }
 
     @Test
+    void mor_fødsel_uten_termin_senest_fødselsdato() {
+        // Arrange
+        var fødselsDato = LocalDate.of(2018, Month.MAY, 1);
+        var uttaksDato = LocalDate.of(2018, Month.MAY, 5);
+        var regelmodell = opprettOpptjeningsperiodeGrunnlagForMorFødsel(null, fødselsDato, uttaksDato);
+
+        // Act
+        var resultat = new OpptjeningsPeriode();
+        new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
+        // Assert
+        assertSkjæringsdato(resultat, fødselsDato);
+    }
+
+    @Test
+    void mor_fødsel_uten_termin_tidlig_uttak() {
+        // Arrange
+        var fødselsdato = LocalDate.of(2018, Month.MAY, 1);
+        var uttaksDato = LocalDate.of(2018, Month.FEBRUARY, 5);
+        var regelmodell = opprettOpptjeningsperiodeGrunnlagForMorFødsel(null, fødselsdato, uttaksDato);
+
+        // Act
+        var tidligsteLovligeUttaksdato = fødselsdato.minusWeeks(12);
+        var resultat = new OpptjeningsPeriode();
+        new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
+        // Assert
+        assertSkjæringsdato(resultat, tidligsteLovligeUttaksdato);
+    }
+
+    @Test
+    void mor_fødsel_og_termin_tidlig_uttak() {
+        // Arrange
+        var fødselsdato = LocalDate.of(2018, Month.MAY, 1);
+        var termindato = LocalDate.of(2018, Month.MAY, 8);
+        var uttaksDato = LocalDate.of(2018, Month.FEBRUARY, 5);
+        var regelmodell = opprettOpptjeningsperiodeGrunnlagForMorFødsel(termindato, fødselsdato, uttaksDato);
+
+        // Act
+        var tidligsteLovligeUttaksdato = fødselsdato.minusWeeks(12);
+        var resultat = new OpptjeningsPeriode();
+        new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
+        // Assert
+        assertSkjæringsdato(resultat, tidligsteLovligeUttaksdato);
+    }
+
+    @Test
+    void mor_fødsel_og_termin_tidlig_uttak_fødsel_etter_termin() {
+        // Arrange
+        var fødselsdato = LocalDate.of(2018, Month.MAY, 8);
+        var termindato = LocalDate.of(2018, Month.MAY, 1);
+        var uttaksDato = LocalDate.of(2018, Month.FEBRUARY, 5);
+        var regelmodell = opprettOpptjeningsperiodeGrunnlagForMorFødsel(termindato, fødselsdato, uttaksDato);
+
+        // Act
+        var tidligsteLovligeUttaksdato = termindato.minusWeeks(12);
+        var resultat = new OpptjeningsPeriode();
+        new RegelFastsettOpptjeningsperiode().evaluer(regelmodell, resultat);
+        // Assert
+        assertSkjæringsdato(resultat, tidligsteLovligeUttaksdato);
+    }
+
+    @Test
     void skalFastsetteDatoLikUttaksDatoFA() {
         // Arrange
         var omsorgsDato = LocalDate.of(2018, Month.JANUARY, 15);
