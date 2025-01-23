@@ -33,7 +33,7 @@ class MedlemskapsvilkårTest {
         var behandlingsdato = of(2024, 1, 1);
         var grunnbeløp = new MedlemskapsvilkårGrunnlag.Beløp(BigDecimal.valueOf(1000));
         var grunnlag = new MedlemskapsvilkårGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, registrertMedlemskapPerioder,
-            personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp);
+            personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp, null);
         var regelEvalueringResultat = InngangsvilkårRegler.medlemskap(grunnlag);
 
         assertThat(regelEvalueringResultat.merknad().regelUtfallMerknad()).isEqualTo(RegelUtfallMerknad.RVM_1025);
@@ -60,7 +60,7 @@ class MedlemskapsvilkårTest {
             Set.of(new MedlemskapsvilkårGrunnlag.Arbeid.Inntekt(new LocalDateInterval(of(2023, 12, 1), of(2023, 12, 31)), grunnbeløp)));
         var behandlingsdato = of(2024, 1, 1);
         var grunnlag = new MedlemskapsvilkårGrunnlag(vurderingsperiodeBosatt, vurderingsperiodeLovligOpphold, Set.of(),
-            personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp);
+            personopplysninger, søknad, arbeid, skjæringstidspunkt, behandlingsdato, grunnbeløp, null);
         var regelEvalueringResultat = InngangsvilkårRegler.medlemskap(grunnlag);
 
         assertThat(regelEvalueringResultat.merknad()).isNull();
