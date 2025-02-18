@@ -26,7 +26,7 @@ class MedlemskapsvilkårTest {
         var region1 = new RegionPeriode(new LocalDateInterval(vurderingsperiodeLovligOpphold.getFomDato(), vurderingsperiodeLovligOpphold.getFomDato()),
             Region.TREDJELAND);
         var region2 = new RegionPeriode(vurderingsperiodeLovligOpphold, Region.EØS);
-        var personopplysninger = new Personopplysninger(Set.of(region1, region2), Set.of(), Set.of(), Set.of(utenlandsadresse));
+        var personopplysninger = new Personopplysninger(Set.of(region1, region2), Set.of(), Set.of(), Set.of(utenlandsadresse), PersonIdentType.FNR);
         var søknad = new MedlemskapsvilkårGrunnlag.Søknad(Set.of(new LocalDateInterval(of(2024, 1, 1), of(2024, 1, 1))));
         var arbeid = new MedlemskapsvilkårGrunnlag.Arbeid(Set.of(), Set.of());
         var skjæringstidspunkt = of(2024, 1, 1);
@@ -52,7 +52,7 @@ class MedlemskapsvilkårTest {
         var oppholdstillatelser = Set.of(tredjeland.periode());
         var personstatus = Set.of(new PersonstatusPeriode(vurderingsperiodeBosatt, PersonstatusPeriode.Type.BOSATT_ETTER_FOLKEREGISTERLOVEN));
         var adresser = Set.of(new Adresse(vurderingsperiodeBosatt, Adresse.Type.BOSTEDSADRESSE, false));
-        var personopplysninger = new Personopplysninger(Set.of(norden, tredjeland, eøs), oppholdstillatelser, personstatus, adresser);
+        var personopplysninger = new Personopplysninger(Set.of(norden, tredjeland, eøs), oppholdstillatelser, personstatus, adresser, PersonIdentType.FNR);
         var søknad = new MedlemskapsvilkårGrunnlag.Søknad(Set.of());
         var grunnbeløp = new MedlemskapsvilkårGrunnlag.Beløp(BigDecimal.valueOf(1000));
         var skjæringstidspunkt = of(2024, 1, 1);

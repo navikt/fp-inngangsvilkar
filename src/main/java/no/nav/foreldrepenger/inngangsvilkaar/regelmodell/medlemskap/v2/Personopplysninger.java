@@ -5,7 +5,7 @@ import java.util.Set;
 import no.nav.fpsak.tidsserie.LocalDateInterval;
 
 public record Personopplysninger(Set<RegionPeriode> regioner, Set<LocalDateInterval> oppholdstillatelser, Set<PersonstatusPeriode> personstatus,
-                                 Set<Adresse> adresser) {
+                                 Set<Adresse> adresser, PersonIdentType personIdentType) {
 
     public record RegionPeriode(LocalDateInterval periode, Region region) {
     }
@@ -14,6 +14,11 @@ public record Personopplysninger(Set<RegionPeriode> regioner, Set<LocalDateInter
         NORDEN,
         EØS,
         TREDJELAND
+    }
+
+    public enum PersonIdentType {
+        FNR,
+        DNR
     }
 
     public record PersonstatusPeriode(LocalDateInterval interval, Type type) {
