@@ -10,16 +10,20 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
+        interval: weekly
     cooldown:
-      default-days: 7
+        default-days: 7
+        exclude:
+            - "no.nav.*"
     open-pull-requests-limit: 10
   - package-ecosystem: maven
     directory: "/"
     registries:
       - maven-github
     schedule:
-      interval: weekly
+        interval: weekly
     cooldown:
-      default-days: 7
-    open-pull-requests-limit: 20
+        default-days: 7
+        exclude:
+            - "no.nav.*"
+    open-pull-requests-limit: 10
