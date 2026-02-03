@@ -6,35 +6,11 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.RegelKjønn;
 import no.nav.foreldrepenger.inngangsvilkaar.regelmodell.RegelSøkerRolle;
 import no.nav.fpsak.nare.json.JsonOutput;
 
 class FødselsVilkårDocTest {
-
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper om = new ObjectMapper();
-        om.registerModule(new JavaTimeModule());
-        om.registerModule(new Jdk8Module());
-        om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE);
-        om.setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE);
-        om.setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
-        om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        om.setVisibility(PropertyAccessor.CREATOR, JsonAutoDetect.Visibility.ANY);
-        return om;
-    }
-
 
     private static final String gammelJson = """
         {
@@ -51,7 +27,7 @@ class FødselsVilkårDocTest {
         """;
 
     @Test
-    void kanDeserialisereGammeltFormat() throws JsonProcessingException {
+    void kanDeserialisereGammeltFormat() {
         var gsource = new FødselsvilkårGrunnlag(RegelKjønn.KVINNE, null, LocalDate.of(2021,4,22),
             null, LocalDate.of(2021,5,20), 1,
             false, false, true,
@@ -61,7 +37,7 @@ class FødselsVilkårDocTest {
     }
 
     @Test
-    void kanSerialisereDeserialisereNyttFormat() throws JsonProcessingException {
+    void kanSerialisereDeserialisereNyttFormat() {
         var gsource = new FødselsvilkårGrunnlag(RegelKjønn.MANN, RegelSøkerRolle.FARA, LocalDate.now().minusWeeks(1),
             null, LocalDate.now().plusMonths(1), 1,
             false, false, true,
@@ -71,8 +47,8 @@ class FødselsVilkårDocTest {
         assertThat(grunnlag).isEqualTo(gsource);
     }
 
-    private FødselsvilkårGrunnlag deserialiser(String s) throws JsonProcessingException {
-        return createObjectMapper().readValue(s, FødselsvilkårGrunnlag.class);
+    private FødselsvilkårGrunnlag deserialiser(String s) {
+        return JsonOutput.fromJson(s, FødselsvilkårGrunnlag.class);
     }
 
     private static String eldgammelJson = """
@@ -113,8 +89,8 @@ class FødselsVilkårDocTest {
         """;
 
     @Test
-    void kanSerialisereDeserialisereEldgammeltFormat() throws JsonProcessingException {
-        var grunnlag = createObjectMapper().readValue(eldgammelJson, FødselsvilkårGrunnlagLegacy.class);
+    void kanSerialisereDeserialisereEldgammeltFormat() {
+        var grunnlag = JsonOutput.fromJson(eldgammelJson, FødselsvilkårGrunnlagLegacy.class);
         assertThat(grunnlag.behandlingsdato()).isEqualTo(LocalDate.of(2018,2,5));
         assertThat(grunnlag.bekreftetFødselsdato()).isEqualTo(LocalDate.of(2017,8,5));
     }
