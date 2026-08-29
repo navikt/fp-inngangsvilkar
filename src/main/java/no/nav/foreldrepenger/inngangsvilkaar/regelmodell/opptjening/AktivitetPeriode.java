@@ -2,75 +2,28 @@ package no.nav.foreldrepenger.inngangsvilkaar.regelmodell.opptjening;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import no.nav.fpsak.tidsserie.LocalDateInterval;
 
 /** Beskriver aktivitet for en angitt periode. */
-public class AktivitetPeriode implements Comparable<AktivitetPeriode> {
-
-    @JsonProperty("datoIntervall")
-    private LocalDateInterval datoIntervall;
-
-    @JsonProperty("aktivitet")
-    private Aktivitet aktivitet;
-
-    @JsonProperty("vurderingsStatus")
-    private VurderingsStatus vurderingsStatus;
-
-    @JsonCreator
-    protected AktivitetPeriode() {
-    }
-
-    public AktivitetPeriode(LocalDateInterval datoIntervall,
-                            Aktivitet aktivitet,
-                            VurderingsStatus vurderingsStatus) {
-        this.datoIntervall = datoIntervall;
-        this.aktivitet = aktivitet;
-        this.vurderingsStatus = vurderingsStatus;
-    }
-
-    /** Returner dag intervall. */
-    public LocalDateInterval getDatoIntervall() {
-        return datoIntervall;
-    }
-
-    public Aktivitet getAktivitet() {
-        return aktivitet;
-    }
-
-    public VurderingsStatus getVurderingsStatus() {
-        return vurderingsStatus;
-    }
+public record AktivitetPeriode(LocalDateInterval datoIntervall,
+                               Aktivitet aktivitet,
+                               VurderingsStatus vurderingsStatus) implements Comparable<AktivitetPeriode> {
 
 
     @Override
     public int compareTo(AktivitetPeriode o) {
-        return this.getDatoIntervall().compareTo(o.getDatoIntervall());
+        return this.datoIntervall().compareTo(o.datoIntervall());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || !getClass().equals(obj.getClass())) {
-            return false;
-        }
-        var other = (AktivitetPeriode) obj;
-        return Objects.equals(getAktivitet(), other.getAktivitet())
-                && Objects.equals(getDatoIntervall(), other.getDatoIntervall());
+        return obj instanceof AktivitetPeriode other && Objects.equals(aktivitet(), other.aktivitet())
+                && Objects.equals(datoIntervall(), other.datoIntervall());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDatoIntervall(), getAktivitet());
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "<datoIntervall=" + datoIntervall + ", aktivitet=" + getAktivitet() + ">";
+        return Objects.hash(datoIntervall(), aktivitet());
     }
 
      public enum VurderingsStatus {

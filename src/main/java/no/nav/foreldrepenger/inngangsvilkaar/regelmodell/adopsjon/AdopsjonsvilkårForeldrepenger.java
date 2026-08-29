@@ -35,7 +35,7 @@ public class AdopsjonsvilkårForeldrepenger implements RuleService<Adopsjonsvilk
     public Specification<AdopsjonsvilkårGrunnlag> getSpecification() {
         var rs = new Ruleset<AdopsjonsvilkårGrunnlag>();
 
-        return (Specification<AdopsjonsvilkårGrunnlag>) rs.hvisRegel(SjekkBarnUnder15År.ID_FP, "Hvis barn under 15 år ved omsorgsovertakelsen ...")
+        return rs.hvisRegel(SjekkBarnUnder15År.ID_FP, "Hvis barn under 15 år ved omsorgsovertakelsen ...")
             .hvis(new SjekkBarnUnder15År(SjekkBarnUnder15År.ID_FP), new Oppfylt())
             .ellers(new IkkeOppfylt(SjekkBarnUnder15År.INGEN_BARN_UNDER_15));
     }

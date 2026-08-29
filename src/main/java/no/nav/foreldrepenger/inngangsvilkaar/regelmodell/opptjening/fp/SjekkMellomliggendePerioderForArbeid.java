@@ -40,7 +40,7 @@ public class SjekkMellomliggendePerioderForArbeid extends LeafSpecification<Oppt
         var mellomliggende = new SjekkMellomliggende(data.getGrunnlag(), data.getRegelParametre());
         data.getAktivitetTidslinjer(true, true)
                 .entrySet().stream()
-                .filter(e -> ARBEID.equals(e.getKey().getAktivitetType()))
+                .filter(e -> ARBEID.equals(e.getKey().aktivitetType()))
                 .forEach(mellomliggende::sjekkMellomliggende);
 
         Evaluation evaluation = ja();

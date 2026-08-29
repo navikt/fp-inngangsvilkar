@@ -77,11 +77,10 @@ public class SjekkInntektSamsvarerMedArbeidAktivitet extends LeafSpecification<O
 
         var aktiviteter = data.getAktivitetTidslinjer(false, false);
         var inntekter = data.getInntektTidslinjer();
-        var grunnlag = data.getGrunnlag();
         var underkjennPerioder = new UnderkjennPerioder(inntekter, data.getRegelParametre().minsteInntekt());
 
         aktiviteter.entrySet().stream()
-            .filter(e -> ARBEID.equals(e.getKey().getAktivitetType()) || FRILANSREGISTER.equals(e.getKey().getAktivitetType()))
+            .filter(e -> ARBEID.equals(e.getKey().aktivitetType()) || FRILANSREGISTER.equals(e.getKey().aktivitetType()))
             .forEach(underkjennPerioder::underkjennPeriode);
 
         return underkjennPerioder.getUnderkjentePerioder();
@@ -92,8 +91,8 @@ public class SjekkInntektSamsvarerMedArbeidAktivitet extends LeafSpecification<O
      */
     private static class UnderkjennPerioder {
         private final Map<Aktivitet, LocalDateTimeline<AktivitetStatus>> underkjentePerioder = new HashMap<>();
-        private Map<Aktivitet, LocalDateTimeline<Long>> inntekter;
-        private Long minsteInntekt;
+        private final Map<Aktivitet, LocalDateTimeline<Long>> inntekter;
+        private final Long minsteInntekt;
 
         UnderkjennPerioder(Map<Aktivitet, LocalDateTimeline<Long>> inntekter, Long minsteInntekt) {
             this.inntekter = inntekter;
@@ -156,14 +155,14 @@ public class SjekkInntektSamsvarerMedArbeidAktivitet extends LeafSpecification<O
             antattGodkjent = new LocalDateTimeline<>(antattGodkjentInterval, AktivitetStatus.ANTATT_GODKJENT);
 
             aktiviteter.entrySet().stream()
-                .filter(e -> ARBEID.equals(e.getKey().getAktivitetType()))
+                .filter(e -> ARBEID.equals(e.getKey().aktivitetType()))
                 .forEach(this::fyllAntattGodkjent);
 
             // Denne er for å få med underkjente (aktiviteter)
             // Frilansperioder uten inntekt blir ikke antatt godkjent - inntil videre
             // Obs på 1) ytelser som godkjenner antatt o
             aktiviteter.entrySet().stream()
-                .filter(e -> FRILANSREGISTER.equals(e.getKey().getAktivitetType()))
+                .filter(e -> FRILANSREGISTER.equals(e.getKey().aktivitetType()))
                 .filter(e -> !e.getValue().isEmpty())
                 .forEach(e -> medAntattGodkjentFramforIkkeGodkjent.put(e.getKey(), e.getValue()));
 

@@ -37,8 +37,8 @@ public class SjekkTilstrekkeligOpptjeningInklAntatt extends LeafSpecification<Op
 
     @Override
     public Evaluation evaluate(OpptjeningsvilkårMellomregning data) {
-        var antattTotalOpptjening = data.getAntattTotalOpptjening().getOpptjentPeriode();
-        var bekreftetOpptjeningPeriode = data.getBekreftetOpptjening().getOpptjentPeriode();
+        var antattTotalOpptjening = data.getAntattTotalOpptjening().opptjentPeriode();
+        var bekreftetOpptjeningPeriode = data.getBekreftetOpptjening().opptjentPeriode();
 
 
         if (data.sjekkErInnenforMinstePeriodeGodkjent(bekreftetOpptjeningPeriode)) {
@@ -53,16 +53,16 @@ public class SjekkTilstrekkeligOpptjeningInklAntatt extends LeafSpecification<Op
             var fristForInntektsrapportering = beregnFristForOpptjeningsopplysninger(data);
             var skalKreveRapportertInntekt = data.getGrunnlag().behandlingsDato().isAfter(fristForInntektsrapportering);
             var antattOpptjeningTidsserie = data.getAntattTotalOpptjening();
-            var avkortetTidsserie = antattOpptjeningTidsserie.getTidslinje().intersection(data.getGrunnlag().getOpptjeningPeriode());
+            var avkortetTidsserie = antattOpptjeningTidsserie.tidslinje().intersection(data.getGrunnlag().getOpptjeningPeriode());
             // Avslå hvis antattopptjening ikke har nok dager (bytte aktivitet, mv) eller rapporteringsfrist passert
             if (skalKreveRapportertInntekt || !data.sjekkErInnenforMinstePeriodeGodkjent(antattTotalOpptjening) || avkortetTidsserie.isEmpty()) {
-                var opptjentPeriode = antattOpptjeningTidsserie.getOpptjentPeriode();
+                var opptjentPeriode = antattOpptjeningTidsserie.opptjentPeriode();
                 data.setTotalOpptjening(antattOpptjeningTidsserie);
                 return nei(IKKE_TILSTREKKELIG_OPPTJENING, opptjentPeriode);
             }
             var totalOpptjening = new OpptjentTidslinje(Period.between(avkortetTidsserie.getMinLocalDate(), avkortetTidsserie.getMaxLocalDate().plusDays(1)), avkortetTidsserie);
             data.setTotalOpptjening(totalOpptjening);
-            var opptjentPeriode = totalOpptjening.getOpptjentPeriode();
+            var opptjentPeriode = totalOpptjening.opptjentPeriode();
             if (data.sjekkErInnenforMinstePeriodeGodkjent(opptjentPeriode)) {
                 return ja();
             }
@@ -85,7 +85,7 @@ public class SjekkTilstrekkeligOpptjeningInklAntatt extends LeafSpecification<Op
 
     private void loggAntattOpptjeningPeriode(OpptjeningsvilkårMellomregning data, Evaluation ev) {
         var antattTotalOpptjening = data.getAntattTotalOpptjening();
-        ev.setEvaluationProperty(OpptjeningsvilkårForeldrepenger.EVAL_RESULT_ANTATT_AKTIVITET_TIDSLINJE, antattTotalOpptjening.getTidslinje());
-        ev.setEvaluationProperty(OpptjeningsvilkårForeldrepenger.EVAL_RESULT_ANTATT_GODKJENT, antattTotalOpptjening.getOpptjentPeriode());
+        ev.setEvaluationProperty(OpptjeningsvilkårForeldrepenger.EVAL_RESULT_ANTATT_AKTIVITET_TIDSLINJE, antattTotalOpptjening.tidslinje());
+        ev.setEvaluationProperty(OpptjeningsvilkårForeldrepenger.EVAL_RESULT_ANTATT_GODKJENT, antattTotalOpptjening.opptjentPeriode());
     }
 }
