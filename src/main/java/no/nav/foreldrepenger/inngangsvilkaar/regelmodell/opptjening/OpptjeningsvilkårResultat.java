@@ -44,11 +44,11 @@ public class OpptjeningsvilkårResultat {
     }
 
     public LocalDateTimeline<Boolean> getResultatTidslinje() {
-        return resultat == null ? null : resultat.getTidslinje();
+        return resultat == null ? null : resultat.tidslinje();
     }
 
     public Period getResultatOpptjent() {
-        return resultat == null ? null : resultat.getOpptjentPeriode();
+        return resultat == null ? null : resultat.opptjentPeriode();
     }
 
     public Map<Aktivitet, LocalDateTimeline<Boolean>> getUnderkjentePerioder() {

@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.inngangsvilkaar.regelmodell.fødsel;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import no.nav.fpsak.nare.json.JsonOutput;
 
 class FødselsVilkårDocTest {
 
-    private static final String gammelJson = """
+    private static final String GAMMEL_JSON = """
         {
             "soekersKjonn" : "KVINNE",
             "bekreftetFoedselsdato" : null,
@@ -28,11 +29,11 @@ class FødselsVilkårDocTest {
 
     @Test
     void kanDeserialisereGammeltFormat() {
-        var gsource = new FødselsvilkårGrunnlag(RegelKjønn.KVINNE, null, LocalDate.of(2021,4,22),
-            null, LocalDate.of(2021,5,20), 1,
+        var gsource = new FødselsvilkårGrunnlag(RegelKjønn.KVINNE, null, LocalDate.of(2021, Month.APRIL,22),
+            null, LocalDate.of(2021, Month.MAY,20), 1,
             false, false, true,
             false, true, false);
-        var grunnlag = deserialiser(gammelJson);
+        var grunnlag = deserialiser(GAMMEL_JSON);
         assertThat(grunnlag).isEqualTo(gsource);
     }
 
@@ -51,7 +52,7 @@ class FødselsVilkårDocTest {
         return JsonOutput.fromJson(s, FødselsvilkårGrunnlag.class);
     }
 
-    private static String eldgammelJson = """
+    private static final String ELDGAMMEL_JSON = """
         {
           "soekersKjonn" : "KVINNE",
           "bekreftetFoedselsdato" : {
@@ -90,9 +91,9 @@ class FødselsVilkårDocTest {
 
     @Test
     void kanSerialisereDeserialisereEldgammeltFormat() {
-        var grunnlag = JsonOutput.fromJson(eldgammelJson, FødselsvilkårGrunnlagLegacy.class);
-        assertThat(grunnlag.behandlingsdato()).isEqualTo(LocalDate.of(2018,2,5));
-        assertThat(grunnlag.bekreftetFødselsdato()).isEqualTo(LocalDate.of(2017,8,5));
+        var grunnlag = JsonOutput.fromJson(ELDGAMMEL_JSON, FødselsvilkårGrunnlagLegacy.class);
+        assertThat(grunnlag.behandlingsdato()).isEqualTo(LocalDate.of(2018, Month.FEBRUARY,5));
+        assertThat(grunnlag.bekreftetFødselsdato()).isEqualTo(LocalDate.of(2017, Month.AUGUST,5));
     }
 
 }

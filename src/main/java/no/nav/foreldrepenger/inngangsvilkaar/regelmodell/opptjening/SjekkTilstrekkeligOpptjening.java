@@ -28,7 +28,7 @@ public class SjekkTilstrekkeligOpptjening extends LeafSpecification<Opptjeningsv
 
     @Override
     public Evaluation evaluate(OpptjeningsvilkårMellomregning data) {
-        var opptjentPeriode = data.getBekreftetOpptjening().getOpptjentPeriode();
+        var opptjentPeriode = data.getBekreftetOpptjening().opptjentPeriode();
 
         if (data.sjekkErInnenforMinstePeriodeGodkjent(opptjentPeriode)) {
             data.setTotalOpptjening(data.getBekreftetOpptjening());

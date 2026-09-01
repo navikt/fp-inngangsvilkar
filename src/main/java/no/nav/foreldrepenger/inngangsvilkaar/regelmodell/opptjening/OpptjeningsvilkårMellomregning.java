@@ -53,30 +53,30 @@ public class OpptjeningsvilkårMellomregning {
 
         // grupper aktivitet perioder etter aktivitet og avkort i forhold til angitt startDato/skjæringstidspunkt
         splitAktiviter(
-            a -> a.getVurderingsStatus() == null)
+            a -> a.vurderingsStatus() == null)
                 .forEach(e -> mellomregning.computeIfAbsent(e.getKey(),
                     a -> new AktivitetMellomregning(a, e.getValue())));
 
         splitAktiviter(
-            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.TIL_VURDERING, a.getVurderingsStatus()))
+            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.TIL_VURDERING, a.vurderingsStatus()))
                 .forEach(e -> mellomregning.computeIfAbsent(e.getKey(),
                     a -> new AktivitetMellomregning(a, e.getValue())));
 
         splitAktiviter(
-            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.VURDERT_GODKJENT, a.getVurderingsStatus()))
+            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.VURDERT_GODKJENT, a.vurderingsStatus()))
                 .forEach(e -> mellomregning.computeIfAbsent(e.getKey(),
                     AktivitetMellomregning::new).setAktivitetManueltGodkjent(e.getValue()));
 
         splitAktiviter(
-            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.VURDERT_UNDERKJENT, a.getVurderingsStatus()))
+            a -> Objects.equals(AktivitetPeriode.VurderingsStatus.VURDERT_UNDERKJENT, a.vurderingsStatus()))
                 .forEach(
                     e -> mellomregning.computeIfAbsent(e.getKey(),
                         AktivitetMellomregning::new).setAktivitetManueltUnderkjent(e.getValue()));
 
         // grupper inntektperioder etter aktivitet og avkort i forhold til angitt startDato/skjæringstidspunkt
-        var grupperInntekterEtterAktiitet = Optional.ofNullable(grunnlag.inntektPerioder()).orElse(List.of()).stream().collect(
-            Collectors.groupingBy(InntektPeriode::getAktivitet,
-                Collectors.mapping(a1 -> new LocalDateSegment<>(a1.getDatoInterval(), a1.getInntektBeløp()), Collectors.toSet())));
+        var grupperInntekterEtterAktiitet = Optional.ofNullable(grunnlag.inntektPerioder()).orElse(List.of()).stream()
+            .collect(Collectors.groupingBy(InntektPeriode::aktivitet,
+                Collectors.mapping(a1 -> new LocalDateSegment<>(a1.datoIntervall(), a1.inntektBeløp()), Collectors.toSet())));
 
         LocalDateSegmentCombinator<Long, Long, Long> inntektOverlapDuplikatCombinator = StandardCombinators::sum;
 
@@ -96,8 +96,8 @@ public class OpptjeningsvilkårMellomregning {
         var aktiviteter = Optional.ofNullable(grunnlag.aktivitetPerioder()).orElse(List.of()).stream()
             .filter(filter)
             .collect(
-                Collectors.groupingBy(AktivitetPeriode::getAktivitet,
-                    Collectors.mapping(a -> new LocalDateSegment<>(a.getDatoIntervall(), Boolean.TRUE), Collectors.toSet())));
+                Collectors.groupingBy(AktivitetPeriode::aktivitet,
+                    Collectors.mapping(a -> new LocalDateSegment<>(a.datoIntervall(), Boolean.TRUE), Collectors.toSet())));
 
         LocalDateSegmentCombinator<Boolean, Boolean, Boolean> aktivitetOverlappDuplikatCombinator = StandardCombinators::alwaysTrueForMatch;
 
